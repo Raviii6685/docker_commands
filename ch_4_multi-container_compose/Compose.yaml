@@ -1,0 +1,27 @@
+networks: 
+  counter-net:
+volumes:
+  counter-vol:
+services: #by this we tell which of the services we have in our multicontainer app
+  we-fe: #1 service 
+    deploy: #using deploy 
+      replicas: 1 #how many replicas for the deployment 
+    build: . #location of the docker file 
+    command: ["python", "app/app.py"] #entry point of teh app
+    ports:
+      - target: 8080
+        published: 5001
+    networks:
+      - counter-net 
+  redis:
+    deploy:
+      replicas: 1
+    image: "redis:latest" # we are ot building from scratch rather we are using the image from the docker hub
+    networks:
+      - counter-net
+    volumes:
+      - type: volume
+        source: counter-vol #name of the volume we have just created
+        target: /app #where we have to mount the volume 
+#below two commads will be helping to creating the necessary volume and networks
+

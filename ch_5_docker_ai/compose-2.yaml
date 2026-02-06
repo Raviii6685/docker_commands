@@ -1,0 +1,11 @@
+ollama:
+  image: nigelpoulton/gsd-book:chat-model
+  volumes:
+    - ollama_data: /root/.ollama
+  enviornment:
+    - MODEL=${MODEL:-mistral:latest}
+  healthcheck:
+  deploy:
+    resources:
+      limits:
+        memory: 8G
